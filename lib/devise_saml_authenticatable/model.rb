@@ -14,7 +14,7 @@ module Devise
       def update_with_password(params={})
         params.delete(:current_password)
         self.update_without_password(params)
-      end	
+      end
 
       def update_without_password(params={})
         params.delete(:password)
@@ -41,6 +41,9 @@ module Devise
       module ClassMethods
         include DeviseSamlAuthenticatable::SamlConfig
         def authenticate_with_saml(saml_response)
+          logger.info("--- SAML RESPONSE ---")
+          logger.info(saml_respoonse.to_json)
+          logger.info("--- END OF SAML RESPONSE ---")
           key = Devise.saml_default_user_key
           attributes = saml_response.attributes
           if (Devise.saml_use_subject)
@@ -53,7 +56,7 @@ module Devise
           resource = where(key => auth_value).first
           if (resource.nil? && !Devise.saml_create_user)
             logger.info("User(#{auth_value}) not found.  Not configured to create the user.")
-            return nil 
+            return nil
           end
 
           if (resource.nil? && Devise.saml_create_user)
