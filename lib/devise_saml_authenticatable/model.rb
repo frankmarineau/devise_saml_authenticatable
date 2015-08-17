@@ -42,7 +42,7 @@ module Devise
         include DeviseSamlAuthenticatable::SamlConfig
         def authenticate_with_saml(saml_response)
           logger.info("--- SAML RESPONSE ---")
-          logger.info(saml_respoonse.to_json)
+          logger.info(saml_response.to_json)
           logger.info("--- END OF SAML RESPONSE ---")
           key = Devise.saml_default_user_key
           attributes = saml_response.attributes
